@@ -1,6 +1,6 @@
-class Cube {
+public class Cube {
     public static void main(String args[]) {
      int n=7;
-     console.log((n*n*n));
+     System.out.println((n*n*n));
     }
 }
