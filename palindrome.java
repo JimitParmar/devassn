@@ -1,6 +1,6 @@
 class palindrome{
     public static void main(String args[]) {
-     str a = "racecar";
+     String a = "racecar";
      system.out.printin(yes);
     }
 }
