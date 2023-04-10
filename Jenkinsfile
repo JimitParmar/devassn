@@ -1,27 +1,29 @@
 pipeline {
-    agent any
-
+    agent {
+        docker {
+            image 'node:14-alpine'
+            args '-u root' // This allows the container to run as root
+        }
+    }
     stages {
-        stage('Checkout SCM') {
+        stage('Checkout') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/main']],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [],
-                    submoduleCfg: [],
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/JimitParmar/devassn'
-                    ]]
-                ])
+                checkout scm
             }
         }
-
         stage('Build') {
             steps {
-                withEnv(['TERM=dumb']) {
-                    sh 'echo 123 | sudo -S npm install -g http-server'
-                }
+                sh 'npm install http-server'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'http-server ./dist -p 8080 &'
             }
         }
     }
